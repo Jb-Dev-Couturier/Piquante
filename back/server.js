@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRoutes from './routes/user.js'
 
 
 //Variable
@@ -29,3 +30,7 @@ mongoose
       )
     )
   ).catch((error)=>console.log(`Probleme de connexion`+' : '+error)) //catch de l'erreur en cas de probleme
+
+  //Creation des routes utile
+
+  app.use('/api/auth', userRoutes);
