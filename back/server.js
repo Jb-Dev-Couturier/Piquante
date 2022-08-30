@@ -19,7 +19,7 @@ app.use(cors());
 dotenv.config();
 
 
-//normalisation du port pour requete header
+//normalisation du port pour le rendre stable (https://www.easy-micro.org/express.php&id=1163)
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
   
@@ -34,6 +34,8 @@ const normalizePort = (val) => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+
+//Améliorez server.js pour le rendre plus stable (https://www.easy-micro.org/express.php&id=1163)
 const errorHandler = (error) => {
   if (error.syscall !== 'listen') {
     throw error;
