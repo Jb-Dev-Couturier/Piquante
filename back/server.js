@@ -10,5 +10,5 @@ const PORT = process.env.PORT;
 
 //connection serveur
 app.listen(PORT, () =>
-  console.log(`Serveur demarée sur http//http://localhost:${PORT}/`)
+  console.log(`Serveur demarée sur http://localhost:${PORT}/`)
 );
