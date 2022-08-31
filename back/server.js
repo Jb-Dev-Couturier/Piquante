@@ -15,6 +15,9 @@ import saucesRoutes from './routes/sauceRoute.js';
 
 //Variable
 const app = express();
+
+
+//Utilisation du __dirname avec ES_modules (https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -24,7 +27,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 dotenv.config();
 
-// to serve images inside public folder
+//Gère la ressource "images" de manière statique à chaque fois qu'elle reçoit une requête vers la route "/images"
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //normalisation du port pour le rendre stable (https://www.easy-micro.org/express.php&id=1163)
 const normalizePort = (val) => {
