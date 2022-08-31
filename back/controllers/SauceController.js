@@ -1,27 +1,35 @@
-import SauceModel from '../models/sauceModel.js'
-import mongoose from 'mongoose'
-import fs from 'fs'
-
+import SauceModel from '../models/sauceModel.js';
+import mongoose from 'mongoose';
+import fs from 'fs';
 
 // controller pour obtenir les sauces
 
-export const getAllSauces = async (req,res) =>{
-    SauceModel.find((err, docs) => {
-    if (!err) res.send(docs);
-    else console.log('error to get data' + err);
-  })
+export const getAllSauces = async (req, res) => {
+  //methode find pour recuperer les sauces de la DB
+  const allSauce = await SauceModel.find();
+  try {
+    res.status(200).json(allSauce);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 // controller pour avoir une sauce
 
-export const getSauce = async (req,res)=>{
-    const id = req.params.id
-}
-
+export const getSauce = async (req, res) => {
+  const id = req.params.id;
+  try {
+    //methode findBYiD pour recuperer la sauce demander
+    const sauce = await SauceModel.findById(id);
+    res.status(200).json(sauce);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 //crée une nouvelle sauces
 
-export const createSauces = async (req,res)=>{
+export const createSauces = async (req, res) => {
   //Création d'une constante pour obtenir un objet utilisable
   const sauceObject = JSON.parse(req.body.sauce);
   //Suppression de l'_id envoyé par le front-end
@@ -45,4 +53,4 @@ export const createSauces = async (req,res)=>{
   } catch (error) {
     res.status(500).json(error);
   }
-}
+};
