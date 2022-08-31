@@ -54,3 +54,26 @@ export const createSauces = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+//update sauce (+image)
+export const updateSauce = async (req,res)=>{
+  const sauceObject = req.file
+  //si on veut modifier l'image
+    ? {
+      //alors on update
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${
+          req.file.filename
+        }`,
+      }
+      //sinon on envoie seulement la requete sans image modifier
+    : { ...req.body };
+    try {
+    const sauce = await SauceModel.updateOne(
+      { _id: req.params.id },
+      { ...sauceObject, _id: req.params.id });
+      res.status(200).json({ message: 'Sauce modifiée' });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+}
