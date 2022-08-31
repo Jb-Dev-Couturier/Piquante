@@ -51,7 +51,7 @@ export const createSauces = async (req, res) => {
     await sauce.save();
     res.status(200).json('Nouvelle Sauce enregistrée');
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error });
   }
 };
 
@@ -69,11 +69,27 @@ export const updateSauce = async (req,res)=>{
       //sinon on envoie seulement la requete sans image modifier
     : { ...req.body };
     try {
+      const id = req.params.id;
     const sauce = await SauceModel.updateOne(
-      { _id: req.params.id },
-      { ...sauceObject, _id: req.params.id });
-      res.status(200).json({ message: 'Sauce modifiée' });
+      { _id: id },
+      { ...sauceObject, _id: id });
+      res.status(200).json({ message: 'Sauce modifiée' + sauce });
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(500).json({ message: error });
+  }
+}
+
+
+//Pour Supprimer Une sauce
+export const DeleteSauce = async (req,res) =>{
+  const id = req.params.id;
+
+  try {
+
+    const sauce = await SauceModel.findById(id)
+      await SauceModel.deleteOne(sauce)
+    res.status(200).json({ message: 'Sauce supprimée'});
+  } catch (error) {
+    res.status(500).json({ message: error });
   }
 }
