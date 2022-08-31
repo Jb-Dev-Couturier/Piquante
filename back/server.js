@@ -4,12 +4,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import path from 'path'
+import { fileURLToPath } from 'url';
+
+//upload des routes
 import userRoutes from './routes/userRoute.js';
 import saucesRoutes from './routes/sauceRoute.js';
-import cors from 'cors';
+
 
 //Variable
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //middleware
 app.use(bodyParser.json({ limit: '30mb', extended: true })); //limite les données par requete
@@ -17,6 +24,8 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 dotenv.config();
 
+// to serve images inside public folder
+app.use('/images', express.static(path.join(__dirname, 'images')));
 //normalisation du port pour le rendre stable (https://www.easy-micro.org/express.php&id=1163)
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -78,6 +87,7 @@ mongoose
   .catch((error) => console.log(`Probleme de connexion` + ' : ' + error)); //catch de l'erreur en cas de probleme
 
 //Creation des routes utile
-
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', saucesRoutes);
+
+
