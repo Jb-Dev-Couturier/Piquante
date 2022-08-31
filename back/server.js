@@ -1,28 +1,26 @@
 //Import
-import http from 'http'
+import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import userRoutes from './routes/userRoute.js'
-import cors from 'cors'
-
+import userRoutes from './routes/userRoute.js';
+import saucesRoutes from './routes/sauceRoute.js';
+import cors from 'cors';
 
 //Variable
 const app = express();
 
-
 //middleware
 app.use(bodyParser.json({ limit: '30mb', extended: true })); //limite les données par requete
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-app.use(cors()); 
+app.use(cors());
 dotenv.config();
-
 
 //normalisation du port pour le rendre stable (https://www.easy-micro.org/express.php&id=1163)
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
-  
+
   if (isNaN(port)) {
     return val;
   }
@@ -33,7 +31,6 @@ const normalizePort = (val) => {
 };
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
 
 //Améliorez server.js pour le rendre plus stable (https://www.easy-micro.org/express.php&id=1163)
 const errorHandler = (error) => {
@@ -66,12 +63,6 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-
-
-
-
-
-
 //Connection DataBase et serveur
 const DBurl = process.env.MONGO_DB_URL;
 mongoose
@@ -86,6 +77,7 @@ mongoose
   )
   .catch((error) => console.log(`Probleme de connexion` + ' : ' + error)); //catch de l'erreur en cas de probleme
 
-  //Creation des routes utile
+//Creation des routes utile
 
-  app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
+app.use('/api/sauces', saucesRoutes);
