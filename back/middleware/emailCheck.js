@@ -1,6 +1,6 @@
 export  const emailCheck = (req, res, next) => {
   const validEmail = (email) => {
-    let emailRegexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    let emailRegexp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     let isRegexTrue = emailRegexp.test(email);
     isRegexTrue ? next() : res.status(400).json({ message: 'mail non valide' });
   };

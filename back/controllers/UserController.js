@@ -1,8 +1,8 @@
 import UserModel from '../models/userModel.js';
 import bcrypt from 'bcrypt';
-import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+
 
 dotenv.config();
 
@@ -12,14 +12,8 @@ export const registerUser = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   //ajout du salt au password
   const hashedPass = await bcrypt.hash(req.body.password, salt);
-  //hachage du mail avec crypto (methode sur documentation crypto)
-  const hashedEmail = CryptoJS.HmacSHA512(
-    req.body.email,
-    process.env.SECRET_CRYPTOJS_TOKEN
-  ).toString(CryptoJS.enc.Base64);
-
   const newUser = new UserModel({
-    email: hashedEmail,
+    email: req.body.email,
     password: hashedPass,
   });
 
@@ -37,13 +31,8 @@ export const registerUser = async (req, res) => {
 //connection avec un compte existant
 export const login = async (req, res) => {
   const password = req.body.password;
-  //appel du hachage du mail pour comparaison existant en DB
-  const hashedEmail = CryptoJS.HmacSHA512(
-    req.body.email,
-    process.env.SECRET_CRYPTOJS_TOKEN
-  ).toString(CryptoJS.enc.Base64);
   try {
-    const user = await UserModel.findOne({ email: hashedEmail });
+    const user = await UserModel.findOne({ email: req.body.email });
 
     if (user) {
       //appel de bcrypt pour comparer le password utilisateur enregistre avec celui de la requete

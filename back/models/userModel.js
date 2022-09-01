@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
+import pkg from 'validator';
+const { isEmail } = pkg;
 
 const userSchema = mongoose.Schema(
   {
@@ -7,6 +9,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      validate: [isEmail],
     },
     password: {
       type: String,
