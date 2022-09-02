@@ -6,7 +6,7 @@ export const passwordCheck = (req, res, next) => {
       .status(400)
       .json({
         message:
-          'Le MDP doit faire 10 caractère au moins, avec une maj, une min et un chiffre au moins.',
+          'Le Mot de passe doit faire 10 caractère au moins, comprenant une majuscule, une mininuscule et un moins un chiffre.',
       });
   } else {
     next();
